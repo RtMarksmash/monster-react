@@ -1,7 +1,7 @@
 
-import { Component } from 'react'
+import { Component } from 'react';
 
-import logo from './logo.svg';
+import CardList from './componentes/card-list/card-list.component';
 import './App.css';
 
 class App extends Component {
@@ -11,6 +11,8 @@ class App extends Component {
       monsters: [],
       searchField: ''
     }
+
+ 
 
   }
 
@@ -31,11 +33,24 @@ class App extends Component {
       )
   };
 
+
+  onSearchChange = (event)=>{
+    console.log(event.target.value)
+    const searchField = event.target.value.toLocaleLowerCase()
+    
+  this.setState(()=>{
+    return {searchField}
+  })
+   }
+
   render(){
     console.log('render')
 
-    const filteredMonsters = this.state.monsters.filter((monster)=>{
-      return monster.name.toLocaleLowerCase().includes(this.state.searchField)
+    const { onSearchChange } = this;
+    const { searchField , monsters } = this.state;
+
+    const filteredMonsters = monsters.filter((monster)=>{
+      return monster.name.toLocaleLowerCase().includes( searchField )
     })
 
     return (
@@ -44,25 +59,16 @@ class App extends Component {
       className='search-box'
       type='search'
       placeholder='search monsters'
-      onChange={
-        (event)=>{
-          console.log(event.target.value)
-          const searchField = event.target.value.toLocaleLowerCase()
-          
-        this.setState(()=>{
-          return {searchField}
-        })
-         }
-      }
+      onChange={ onSearchChange }
       />
-      {
+     {/*  {
         filteredMonsters.map((monster)=>{
           return <h1 key={monster.id}>
             {monster.name}</h1>
 
         })
-      }
- 
+      } */}
+      <CardList monsters={filteredMonsters}/>
     </div>
   );
   }  
